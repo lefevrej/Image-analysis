@@ -1,0 +1,6 @@
+**/doc
+**/obj
+**/bin
+/images/diff.pgm
+**/._*
+*DS*
