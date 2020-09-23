@@ -1,4 +1,4 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/diffimage $(BDIR)/threshold $(BDIR)/normalize $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/inverse
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/diffimage $(BDIR)/threshold $(BDIR)/normalize $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/inverse $(BDIR)/log $(BDIR)/pow_law $(BDIR)/w_averaging
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -Wall
@@ -45,6 +45,16 @@ $(BDIR)/gammac:   $(CDIR)/gammac.c $(IDIR)/lgammac.h $(IDIR)/mcimage.h $(ODIR)/m
 $(BDIR)/inverse:   $(CDIR)/inverse.c $(IDIR)/linverse.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/linverse.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/inverse.c $(ODIR)/linverse.o $(ODIR)/mcimage.o -lm -o $(BDIR)/inverse
 
+$(BDIR)/log:   $(CDIR)/log.c $(IDIR)/llog.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/llog.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/log.c $(ODIR)/llog.o $(ODIR)/mcimage.o -lm -o $(BDIR)/log
+	
+$(BDIR)/pow_law:   $(CDIR)/pow_law.c $(IDIR)/lpow_law.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lpow_law.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/pow_law.c $(ODIR)/lpow_law.o $(ODIR)/mcimage.o -lm -o $(BDIR)/pow_law
+	
+$(BDIR)/w_averaging:   $(CDIR)/w_averaging.c $(IDIR)/lw_averaging.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lw_averaging.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/w_averaging.c $(ODIR)/lw_averaging.o $(ODIR)/mcimage.o -lm -o $(BDIR)/w_averaging
+
+
 # ===============================================================
 # Library functions 
 # ===============================================================
@@ -81,6 +91,15 @@ $(ODIR)/lgammac.o:	$(LDIR)/lgammac.c $(IDIR)/lgammac.h $(IDIR)/mcimage.h
 	
 $(ODIR)/linverse.o:	$(LDIR)/linverse.c $(IDIR)/linverse.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/linverse.c -o $(ODIR)/linverse.o	
+	
+$(ODIR)/llog.o:	$(LDIR)/llog.c $(IDIR)/llog.h $(IDIR)/mcimage.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/llog.c -o $(ODIR)/llog.o	
+	
+$(ODIR)/lpow_law.o:	$(LDIR)/lpow_law.c $(IDIR)/lpow_law.h $(IDIR)/mcimage.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpow_law.c -o $(ODIR)/lpow_law.o	
+
+$(ODIR)/lw_averaging.o:	$(LDIR)/lw_averaging.c $(IDIR)/lw_averaging.h $(IDIR)/mcimage.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lw_averaging.c -o $(ODIR)/lw_averaging.o	
 
 $(BDIR)/ppm2pgm:	$(CDIR)/ppm2pgm.c $(IDIR)/mcimage.h $(LDIR)/mcimage.c
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/ppm2pgm.c  $(ODIR)/mcimage.o -o $(BDIR)/ppm2pgm
