@@ -10,20 +10,20 @@ int main(int argc, char **argv){
 	FILE *fp;
 	
 	if(argc != 4){
-		fprintf(stderr, "usage: %s kernel.txt out.pgm \n", argv[0]);
-		exit(0);
+		fprintf(stderr, "usage: %s img.pgm kernel.txt out.pgm \n", argv[0]);
+		exit(1);
 	}
 	
 	image = readimage(argv[1]);	
 	if (image == NULL){
     	fprintf(stderr, "w_averaging: readimage failed\n");
-    	exit(0);
+    	exit(1);
   	}
 	
 	fname = argv[2];
 	if (fname == NULL){
     	fprintf(stderr, "w_averaging: cannot read filename\n");
-    	exit(0);
+    	exit(1);
   	}
 	
 	fp = fopen(fname,"r");
@@ -35,22 +35,15 @@ int main(int argc, char **argv){
 	float *kernel = malloc(a*b*sizeof(float*));
 	for(i=0; i<a*b; ++i)
 		fscanf(fp, "%f", &kernel[i]);
-	for(i=0; i<a*b; ++i)
-		printf("%f\n", kernel[i]);
 	
 	if(fp==NULL){
 		fprintf(stderr, "w_averaging: Can't open input file %s!", fname);
-		exit(0);
+		exit(1);
 	}
-	
-				
-
-
-
   	
-	if (!lw_averaging(&image, kernel ,3, 3)){
+	if (!lw_averaging(&image, kernel ,a, b)){
     	fprintf(stderr, "w_averaging: function lw_averaging failed\n");
-    	exit(0);
+    	exit(1);
   	}
 
 	writeimage(image, argv[argc-1]);

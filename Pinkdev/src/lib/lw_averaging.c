@@ -12,7 +12,8 @@ uint32_t lw_averaging(struct xvimage **image,		/* input: images to process */
              )
 /* ==================================== */
 {
-	uint32_t i, j, ik, jk, k, ka, kb;
+	uint32_t i, j, k;
+	int32_t di, dj, ka, kb;
 	uint8_t *ptrimage, *ptrimage2;
 	float newval, k_sum;
 	uint32_t rs, cs;
@@ -34,18 +35,21 @@ uint32_t lw_averaging(struct xvimage **image,		/* input: images to process */
 		
 	ka=a/2;
 	kb=b/2;
-	for(i=kb; i<rs-kb; ++i){
-		for(j=ka; j<cs-ka; ++j){
+	di=-kb;
+	for(i=kb; i<cs-kb; ++i){
+		for(j=ka; j<rs-ka; ++j){
 			newval = 0;
 			k = 0;
-			for(ik= i-kb; ik<i+kb+1; ++ik){
-				for(jk= j-ka; jk<j+ka+1; ++jk){
-					newval+=weights[k]*ptrimage[jk+ik*(rs)];
+			for(di=-kb; di<kb+1; ++di){
+				for(dj=-ka; dj<ka+1; ++dj){
+					newval+=weights[k]*ptrimage[j+dj+(i+di)*(rs)];
 					k++;
 				}
 			}
-			newval = newval>255 ? 255 : newval;
-			ptrimage2[j+i*(rs)]=newval<0 ? 0 : (uint8_t)newval;
+			newval/=k_sum;
+			if (newval < NDG_MIN) newval = NDG_MIN;
+			if (newval > NDG_MAX) newval = NDG_MAX;
+			ptrimage2[j+i*(rs)]=(uint8_t)newval;
 		}
 	}
 	
