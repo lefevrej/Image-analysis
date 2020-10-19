@@ -13,7 +13,7 @@
 
 /* ==================================== */
 uint32_t lcga(struct xvimage **image,		/* input: images to process */
-			    int r_r, int f_r, uint32_t s, float kh
+			    int r_r, int f_r, uint32_t s, float kh, uint8_t pw_wise
                                    			/* output: modified image  */       
              )
 /* ==================================== */
@@ -53,38 +53,23 @@ uint32_t lcga(struct xvimage **image,		/* input: images to process */
 				printf("%d%%\n", cnt);
 				cnt++;
 			}
-			//printf("%d\n", ip*rs+jp);
 
 			if(ip==jp && ip==r_r) printf("%d -> %d\n", -r_r+f_r, r_r-f_r+1);
 			diq=-r_r+f_r;
 			if(ip==jp && ip==r_r) printf("diq=%d\n", diq);
 
             for(diq=-r_r+f_r; diq<r_r-f_r+1; ++diq){
-				//printf("diq\n");
                 for(djq=-r_r+f_r; djq<r_r-f_r+1; ++djq){
                     d=0.0; //init distance between windows
-					//printf("q\n");
                     for(di=-f_r; di<f_r+1; ++di){
                         for(dj=-f_r; dj<f_r+1; ++dj){
-							//printf("index q=%d\n", (ip+diq+di)*rs+jp+djq+dj);
-							//fflush(0);
-
 							//stack dist between windows
                             d+=powf(ptrimage[(ip+di)*rs+jp+dj]-ptrimage[(ip+diq+di)*rs+jp+djq+dj], 2);
-							/*if(cnt2%((int)powf(2.0*f_r+1, 2))==0){
-								printf("d=%f\n", d);
-							}*/
-
 							cnt2++;
                         }
                     }
 					d/=nb_f;
-					//printf("d=%f\n", d);
 					w=expf(-max( d-s_2, 0.0 ) / h_2 );
-					/*if(d-s_2<10.0){
-						printf("houra -> w=%f, d=%f\n", w, d);
-					}*/
-					//printf("w=%f\n", w);
 					sum_q += ptrimage[(ip+diq)*rs+jp+djq]*w;
 					sum_w += w;
                 }
@@ -102,8 +87,3 @@ uint32_t lcga(struct xvimage **image,		/* input: images to process */
 	
 	return 1; /* Everythng went fine / tout s'est bien passe */
 }
-
-
-
-
-
