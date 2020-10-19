@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <mcimage.h>
 #include <laddconst.h>
 

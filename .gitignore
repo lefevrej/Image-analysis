@@ -1,6 +1,7 @@
 **/doc
 **/obj
 **/bin
-/images/diff.pgm
+**/images/*
 **/._*
 *DS*
+Pinkdev/pink.start

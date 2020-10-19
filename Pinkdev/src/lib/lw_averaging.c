@@ -35,7 +35,6 @@ uint32_t lw_averaging(struct xvimage **image,		/* input: images to process */
 		
 	ka=a/2;
 	kb=b/2;
-	di=-kb;
 	for(i=kb; i<cs-kb; ++i){
 		for(j=ka; j<rs-ka; ++j){
 			newval = 0;
