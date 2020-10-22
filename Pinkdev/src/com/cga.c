@@ -6,10 +6,10 @@
 int main(int argc, char **argv){
 	struct xvimage *image;
     float kh;
-    int r_radius, f_radius, s; 
+    int r_radius, f_radius, s, w_wise; 
 	
-	if(argc != 7){
-		fprintf(stderr, "usage: %s img.pgm r_radius f_radius sigma k_sigma out.pgm \n", argv[0]);
+	if(argc != 8){
+		fprintf(stderr, "usage: %s img.pgm r_radius f_radius sigma k_sigma window-wise out.pgm  \n", argv[0]);
 		exit(1);
 	}
 	
@@ -24,10 +24,11 @@ int main(int argc, char **argv){
     // assert r_radius > f_radius
     s = atoi(argv[4]); // read sigma
     kh = atof(argv[5]);	// read k for h=k*s
+    w_wise = atoi(argv[6]); // 0 if pixel-wise, > 0 otherwise
 
-    printf("r=%d, rf=%d, s=%d, k=%f\n", r_radius, f_radius, s, kh);
+    printf("r=%d, rf=%d, s=%d, k=%f, w_wise=%d\n", r_radius, f_radius, s, kh, w_wise);
   	
-	if (!lcga(&image, r_radius, f_radius ,s, kh)){
+	if (!lcga(&image, r_radius, f_radius ,s, kh, w_wise)){
     	fprintf(stderr, "w_averaging: function lw_averaging failed\n");
     	exit(1);
   	}

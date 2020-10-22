@@ -85,3 +85,17 @@ extern void printimage(
 extern struct xvimage * readimage(
   char *filename
 );
+
+extern int32_t readrgbimage(
+  char *filename,
+  struct xvimage ** r,
+  struct xvimage ** g,
+  struct xvimage ** b
+);
+
+extern void writergbimage(
+  struct xvimage * redimage,
+  struct xvimage * greenimage,
+  struct xvimage * blueimage,
+  char *filename
+);
