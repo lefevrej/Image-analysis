@@ -21,12 +21,11 @@ void *tcga(void *args){
 	oned *t_oned = (oned*) args;
 	params *t_p = (params*) t_oned->ps;
 	if (!lcga(t_oned->cimage, t_p->r, t_p->f , t_p->s, t_p->kh, t_p->w_wise)){
-    	fprintf(stderr, "w_averaging: function lw_averaging failed\n");
+    	fprintf(stderr, "cga: function cga failed\n");
     	exit(1);
   	}
 	return NULL;
 }
-
 
 int main(int argc, char **argv){
 	struct xvimage **image;

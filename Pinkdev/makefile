@@ -53,7 +53,7 @@ $(BDIR)/pow_law:   $(CDIR)/pow_law.c $(IDIR)/lpow_law.h $(IDIR)/mcimage.h $(ODIR
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/pow_law.c $(ODIR)/lpow_law.o $(ODIR)/mcimage.o -lm -o $(BDIR)/pow_law
 	
 $(BDIR)/w_averaging:   $(CDIR)/w_averaging.c $(IDIR)/lw_averaging.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lw_averaging.o
-	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/w_averaging.c $(ODIR)/lw_averaging.o $(ODIR)/mcimage.o -lm -o $(BDIR)/w_averaging
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/w_averaging.c $(ODIR)/lw_averaging.o $(ODIR)/mcimage.o -lpthread -lm -o $(BDIR)/w_averaging
 
 $(BDIR)/cga:   $(CDIR)/cga.c $(IDIR)/lcga.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lcga.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/cga.c $(ODIR)/lcga.o $(ODIR)/mcimage.o -lpthread -lm -o $(BDIR)/cga
