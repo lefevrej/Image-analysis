@@ -30,7 +30,6 @@ uint32_t lcga(struct xvimage **image,		/* input: images to process */
 	cs = (*image)->col_size;
 	h_2 = powf(kh*s,2); // (k*sigma)**2
 	s_2 = 2.0*pow(s,2); //2*sigma**2
-	printf("s_2=%d, h_2=%f\n", s_2, h_2);
   
 	/* ---------------------------------------------------------- */
 	/* calcul du resultat */
@@ -58,40 +57,43 @@ uint32_t lcga(struct xvimage **image,		/* input: images to process */
 					d=0.0; //init distance between windows
 					nb_f=0;
 					// pick value in the small widow around p&q
-					for(di=-f_r; di<f_r+1; ++di){
-						for(dj=-f_r; dj<f_r+1; ++dj){
-							if(belong_image(ip+di, jp+dj, rs, cs) && belong_image(ip+diq+di, jp+djq+dj, rs, cs)){
-							//stack dist between windows
-								if(w_wise!=0){ //if we are in the window-wise case
-									av_q=0.0;
-									av_p=0.0;
-									nb_sf=0;
-									for(diw=-f_r; diw<f_r+1; ++diw){
-										for(djw=-f_r; djw<f_r+1; ++djw){
-											if(belong_image(ip+di+diw, jp+dj+djw, rs, cs) && belong_image(ip+diq+di+diw, jp+djq+dj+djw, rs, cs)){
-												av_q+=ptrimage[(ip+diq+di+diw)*rs+jp+djq+dj+djw];
-												av_p+=ptrimage[(ip+di+diw)*rs+jp+dj+djw];
-												nb_sf++;//increment the number of elements processed in the second window
+                    if(belong_image(ip+diq, jp+djq, rs, cs)){
+						for(di=-f_r; di<f_r+1; ++di){
+							for(dj=-f_r; dj<f_r+1; ++dj){
+								if(belong_image(ip+di, jp+dj, rs, cs) && belong_image(ip+diq+di, jp+djq+dj, rs, cs)){
+								//stack dist between windows
+									if(w_wise!=0){ //if we are in the window-wise case
+										av_q=0.0;
+										av_p=0.0;
+										nb_sf=0;
+										for(diw=-f_r; diw<f_r+1; ++diw){
+											for(djw=-f_r; djw<f_r+1; ++djw){
+												if(belong_image(ip+di+diw, jp+dj+djw, rs, cs) && belong_image(ip+diq+di+diw, jp+djq+dj+djw, rs, cs)){
+													av_q+=ptrimage[(ip+diq+di+diw)*rs+jp+djq+dj+djw];
+													av_p+=ptrimage[(ip+di+diw)*rs+jp+dj+djw];
+													nb_sf++;//increment the number of elements processed in the second window
+												}
 											}
 										}
+										av_q/=nb_sf;
+										av_p/=nb_sf;
+									} else {//pixel-wise case
+										av_q=ptrimage[(ip+diq+di)*rs+jp+djq+dj];
+										av_p=ptrimage[(ip+di)*rs+jp+dj];
 									}
-									av_q/=nb_sf;
-									av_p/=nb_sf;
-								} else {//pixel-wise case
-									av_q=ptrimage[(ip+diq+di)*rs+jp+djq+dj];
-									av_p=ptrimage[(ip+di)*rs+jp+dj];
-								}
-								nb_f++;//increment the number of elements processed in the window
-								d+=powf(av_p-av_q, 2);
-							}	
+                                    nb_f++;//increment the number of elements processed in the window
+									d+=powf(av_p-av_q, 2);
+								}	
+							}
 						}
+						fflush(0);
+						if(nb_f!=0){
+							d/=nb_f;
+							w=expf( -max( d-s_2, 0.0 ) / h_2 );
+							sum_q += ptrimage[(ip+diq)*rs+jp+djq]*w;
+							sum_w += w;
+						}				
 					}
-					if(nb_f!=0){
-						d/=nb_f;
-						w=expf( -max( d-s_2, 0.0 ) / h_2 );
-						sum_q += ptrimage[(ip+diq)*rs+jp+djq]*w;
-						sum_w += w;
-					}					
                 }
             }
 			newval = (1.0/sum_w)*sum_q;
@@ -103,5 +105,5 @@ uint32_t lcga(struct xvimage **image,		/* input: images to process */
 	freeimage(*image);
 	*image = image2;
 	
-	return 1; /* Everythng went fine / tout s'est bien passe */
+	return 1; /* Everything went fine / tout s'est bien passe */
 }

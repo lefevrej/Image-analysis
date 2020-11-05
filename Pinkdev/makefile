@@ -1,4 +1,4 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/diffimage $(BDIR)/threshold $(BDIR)/normalize $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/inverse $(BDIR)/log $(BDIR)/pow_law $(BDIR)/w_averaging $(BDIR)/cga $(BDIR)/cga_rgb
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/diffimage $(BDIR)/threshold $(BDIR)/normalize $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/inverse $(BDIR)/log $(BDIR)/pow_law $(BDIR)/w_averaging $(BDIR)/cga
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -Wall
@@ -56,10 +56,7 @@ $(BDIR)/w_averaging:   $(CDIR)/w_averaging.c $(IDIR)/lw_averaging.h $(IDIR)/mcim
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/w_averaging.c $(ODIR)/lw_averaging.o $(ODIR)/mcimage.o -lm -o $(BDIR)/w_averaging
 
 $(BDIR)/cga:   $(CDIR)/cga.c $(IDIR)/lcga.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lcga.o
-	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/cga.c $(ODIR)/lcga.o $(ODIR)/mcimage.o -lm -o $(BDIR)/cga
-
-$(BDIR)/cga_rgb:   $(CDIR)/cga_rgb.c $(IDIR)/lcga.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lcga.o
-	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/cga_rgb.c $(ODIR)/lcga.o $(ODIR)/mcimage.o -lm -lpthread -o $(BDIR)/cga_rgb
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/cga.c $(ODIR)/lcga.o $(ODIR)/mcimage.o -lpthread -lm -o $(BDIR)/cga
 
 
 # ===============================================================
